@@ -29,5 +29,5 @@
 ![お問い合わせフォームER図](./contact_form_er.png)
 
 ## URL
--アプリケーション(開発環境)：http://localhost/
--DB管理画面(PHPMyAdmin)：http://localhost:8080/
+- アプリケーション(開発環境)：http://localhost/
+- DB管理画面(PHPMyAdmin)：http://localhost:8080/
