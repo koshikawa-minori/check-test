@@ -26,3 +26,5 @@ yarn-error.log
 /storage/*.key
 /storage/pail
 /docker/mysql/data/
+vendor/
+.env
