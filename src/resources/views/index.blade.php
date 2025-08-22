@@ -24,11 +24,17 @@
         <div class="form__group--content">
           <div class="form__input--text">
             <input type="text" name="last_name" placeholder="例：山田" value="{{ old('last_name', $contact['last_name'] ?? '') }}"/>
-  <!-- バリデーション書く-->
+          </div>
+          <div class="form__error">
+            @error('last_name')
+            {{ $message }}
+            @enderror
           </div>
           <div class="form__input--text">
             <input type="text" name="first_name" placeholder="例：太郎" value="{{ old('first_name', $contact['first_name'] ?? '') }}"/>
-  <!-- バリデーション上記コピペ修正-->
+            @error('first_name')
+            {{ $message }}
+            @enderror
           </div>
         </div>
         <div class="form__group--title">
@@ -61,7 +67,9 @@
         <div class="form__group--content">
           <div class="form__input--text">
             <input type="email" name="email" placeholder="例：test@example.com" value="{{ old('email')}}"/>
-  <!-- バリデーション上記コピペ修正-->
+            @error('email')
+            {{ $message }}
+            @enderror
           </div>
         </div>
         <div class="form__group--title">
@@ -97,21 +105,22 @@
         <div class="form__group--content">
           <div class="form__input--text">
             <input type="text" name="address" placeholder="例：東京都渋谷区千駄ヶ谷1-2-3" value="{{ old('address')}}"/>
-  <!-- バリデーション上記コピペ修正-->
+            @error('address')
+            {{ $message }}
+            @enderror
           </div>
         </div>
         <div class="form__group--title">
           <span class="form__title">
             建物名
           </span>
-          <span class="form__mark">
-            ＊
-          </span>
         </div>
         <div class="form__group--content">
           <div class="form__input--text">
             <input type="text" name="building" placeholder="例：千駄ヶ谷マンション101" value="{{ old('building')}}"/>
-  <!-- バリデーション上記コピペ修正-->
+            @error('building')
+            {{ $message }}
+            @enderror
           </div>
         </div>
         <div class="form__group--title">
@@ -146,7 +155,9 @@
         <div class="form__group--content">
           <div class="form__input--text">
             <textarea name="detail" placeholder="例：お問い合わせ内容をご記載ください">{{ old('detail')}}</textarea>
-  <!-- バリデーション上記コピペ修正-->
+            @error('detail')
+            {{ $message }}
+            @enderror
           </div>
         </div>
         <div class="form__button">
