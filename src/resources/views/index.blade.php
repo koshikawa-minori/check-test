@@ -23,11 +23,11 @@
         </div>
         <div class="form__group--content">
           <div class="form__input--text">
-            <input type="text" name="last_name" placeholder="例：山田" value="{{ old('last_name')}}"/>
+            <input type="text" name="last_name" placeholder="例：山田" value="{{ old('last_name', $contact['last_name'] ?? '') }}"/>
   <!-- バリデーション書く-->
           </div>
           <div class="form__input--text">
-            <input type="text" name="first_name" placeholder="例：太郎" value="{{ old('first_name')}}"/>
+            <input type="text" name="first_name" placeholder="例：太郎" value="{{ old('first_name', $contact['first_name'] ?? '') }}"/>
   <!-- バリデーション上記コピペ修正-->
           </div>
         </div>
@@ -41,9 +41,12 @@
         </div>
         <div class="form__group--content">
           <div class="form__input--text">
-            <input type="radio" name="gender" value="男性"/>男性
-            <input type="radio" name="gender" value="女性"/>女性
-            <input type="radio" name="gender" value="その他"/>その他
+            <input type="radio" name="gender" value="男性"
+            {{ (old('gender',$content['gender'] ?? '男性') ==='男性') ? 'checked' : ""}}/>男性
+            <input type="radio" name="gender" value="女性"
+            {{ (old('gender',$content['gender'] ?? '男性') ==='女性') ? 'checked' : ""}}/>女性
+            <input type="radio" name="gender" value="その他"
+            {{ (old('gender',$content['gender'] ?? '男性') ==='その他') ? 'checked' : ""}}/>その他
           </div>
   <!-- バリデーション上記コピペ修正-->
         </div>
