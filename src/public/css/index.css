@@ -1,0 +1,144 @@
+/* 全て*/
+.contact-form__content {
+  margin: 0 auto;
+  padding: 30px 15px;
+  max-width: 1230px;
+}
+
+/*入力欄の黒い枠*/
+input:focus {
+  outline: none;
+}
+
+/*Contact*/
+.contact-form__head {
+  margin-bottom: 40px;
+  text-align: center;
+  color: #9e9387;
+  font-family: "Alike", serif;
+}
+
+/*フォーム入力欄すべて */
+.form {
+  margin: 0 auto;
+  width: 70%;
+  text-align: center;
+  outline: none;
+}
+
+/*１つ１つの入力する名前＋欄のグループ*/
+.form__group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+/*入力欄+エラー*/
+.form__group--content{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #9e9387;
+}
+/*※*/
+.form__mark {
+  color: #f3b7b9;
+  margin-bottom: 15px;
+}
+/*エラーメッセージ表示*/
+.form__error {
+  height: 20px;
+  color: #ec755a;
+  text-align: left;
+}
+
+/*入力欄の外枠*/
+.form__input--text {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*姓と名*/
+.input-name {
+  padding: 10px;
+  width: 70%;
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*性別文字列３種*/
+.input-gender {
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  color: #9e9387;
+}
+
+/*ラジオボタン*/
+.input-radio {
+
+}
+
+/*メールアドレス・住所・建物名入力欄*/
+.input-item {
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*電話番号入力欄*/
+.input-tel {
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*お問い合わせの種類外柄*/
+.form__input--kind {
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*お問い合わせの種類*/
+.input-kind {
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*お問い合わせ入力欄外側*/
+.form__input--detail {
+  height: 180px;
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*お問い合わせ入力欄外側*/
+.input-detail {
+  border: 1px solid #f5f5f5;
+  background-color: #f5f5f5;
+  color: #9e9387;
+}
+
+/*確認画面ボタン外側*/
+.form__button {
+  border: 1px solid #f5f5f5;
+  margin-top: 30px;
+}
+
+/*確認画面ボタン*/
+.form__button-submit {
+  padding: 10px;
+  width: 30%;
+  height: 50px;
+  border: 1px solid #f5f5f5;
+  background-color: #82766a;
+  color: #fff;
+  cursor: pointer;
+}
