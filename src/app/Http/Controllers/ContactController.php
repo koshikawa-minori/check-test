@@ -33,6 +33,8 @@ class ContactController extends Controller
 
   public function store(ContactRequest $request)
   {
+    $tel = $request->tel1 . "$request->tel2" . "$request->tel3";
+    $request->merge(['tel' =>$tel]);
     $contact = $request->only([
       'last_name',
       'first_name',
