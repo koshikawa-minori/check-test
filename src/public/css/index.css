@@ -25,12 +25,12 @@ input:focus {
   outline: none;
 }
 
-/*１つ１つの項目のグループ*/
+/*ラベルと入力欄*/
 .form__group {
   display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 20px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
 }
 
 /* ラベル部分 */
@@ -57,7 +57,7 @@ input:focus {
   margin-bottom: 15px;
   color: #9e9387;
 }
-/* 入力＋エラー */
+/* 入力文字＋エラー */
 .form__input-wrapper {
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@ input:focus {
   gap: 6px;
 }
 
-/* 名前*/
+/* 入力欄の姓と名*/
 .name-row {
   gap: 60px;
 }
@@ -88,11 +88,10 @@ input:focus {
   width: 360%;
 }
 
-/* ただし “電話番号の3つ＋ハイフン” だけは横並びに戻す */
+/* 電話番号の3つ＋ハイフン” だけは横並びに戻す */
 .tel-wrapper
 .form__input-wrapper{
   flex-direction: row;
-  /* ←電話だけ行方向に戻す */
   align-items: center;
   gap: 10px;
 }
@@ -222,7 +221,7 @@ input:focus {
   display: block;
   width: 350%;
   min-height: 220px;
-  resize: vertical;
+  resize: none;
   padding: 10px 12px;
 }
 

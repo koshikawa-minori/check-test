@@ -16,8 +16,11 @@ class ContactController extends Controller
 
   public function confirm(ContactRequest $request)
   {
-    $tel = $request->tel1 . "$request->tel2" . "$request->tel3";
+    $tel = $request->filled('tel1')
+      ? ($request->tel1 . $request->tel2 . $request->tel3)
+      : $request->input('tel', '');
     $request->merge(['tel' => $tel]);
+
     $contact = $request->only([
       'last_name',
       'first_name',
@@ -25,6 +28,7 @@ class ContactController extends Controller
       'email',
       'tel',
       'address',
+      'building',
       'kind',
       'detail',
     ]);
@@ -35,8 +39,11 @@ class ContactController extends Controller
 
   public function store(ContactRequest $request)
   {
-    $tel = $request->tel1 . "$request->tel2" . "$request->tel3";
-    $request->merge(['tel' =>$tel]);
+    $tel = $request->filled('tel1')
+      ? ($request->tel1 . $request->tel2 . $request->tel3)
+      : $request->input('tel');
+    $request->merge(['tel' => $tel]);
+
     $contact = $request->only([
       'last_name',
       'first_name',
@@ -44,6 +51,7 @@ class ContactController extends Controller
       'email',
       'tel',
       'address',
+      'building',
       'kind',
       'detail',
     ]);

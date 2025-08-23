@@ -1,0 +1,31 @@
+/* 全て*/
+.thanks__content {
+  margin: 0 auto;
+  padding: 30px 15px;
+  max-width: 1230px;
+}
+
+/* Thank you */
+.thanks__content--group {
+  margin: 0 auto;
+  width: 70%;
+  opacity: 0.1;
+  color:82766a;
+}
+
+/* Thanks ボタン*/
+.thanks__button{
+  width: 100%;
+  justify-content: center;
+}
+
+/* Thanks ボタンsubmit*/
+.thanks__button-submit{
+  width: 180px;
+  height: 44px;
+  border: none;
+  background-color: #82766a;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}

@@ -81,11 +81,11 @@
         </div>
         <div class="form__group--content tel-wrapper is-column">
           <div class="form__input-wrapper">
-            <input class="input-item" type="text" name="tel1" placeholder="例：080" value="{{ old('tel1') }}"/>
+            <input class="input-item" type="text" name="tel1" placeholder="例:080" value="{{ old('tel1') }}"/>
             <span class="tel-sep">-</span>
-            <input class="input-item" type="text" name="tel2" placeholder="例：1234" value="{{ old('tel2') }}"/>
+            <input class="input-item" type="text" name="tel2" placeholder="例:1234" value="{{ old('tel2') }}"/>
             <span class="tel-sep">-</span>
-            <input class="input-item" type="text" name="tel3" placeholder="例：5678" value="{{ old('tel3') }}"/>
+            <input class="input-item" type="text" name="tel3" placeholder="例:5678" value="{{ old('tel3') }}"/>
           </div>
           @php
             $telError = $errors->first('tel1') ?: $errors->first('tel2') ?: $errors->first('tel3');
