@@ -14,131 +14,231 @@ input:focus {
 .contact-form__head {
   margin-bottom: 40px;
   text-align: center;
-  color: #9e9387;
+  color: #847870;
   font-family: "Alike", serif;
 }
 
-/*フォーム入力欄すべて */
+/*フォームすべて */
 .form {
   margin: 0 auto;
-  width: 70%;
-  text-align: center;
+  width: 80%;
   outline: none;
 }
 
-/*１つ１つの入力する名前＋欄のグループ*/
+/*１つ１つの項目のグループ*/
 .form__group {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
 }
 
-/*入力欄+エラー*/
-.form__group--content{
+/* ラベル部分 */
+.form__group--title {
+  width: 200px;
+  text-align: right;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  color: #9e9387;
+  gap: 4px;
+  color: #847870;
 }
+
 /*※*/
 .form__mark {
   color: #f3b7b9;
-  margin-bottom: 15px;
+  margin-left: 4px;
 }
+
+/*入力欄+エラー*/
+.form__group--content,
+.form__button {
+  width: calc(100% - 200px);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  color: #9e9387;
+}
+/* 入力＋エラー */
+.form__input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* 名前*/
+.name-row {
+  gap: 60px;
+}
+
+.name-row .form__input--text .input-item {
+  width: 310px;
+  max-width: 100%;
+}
+
+
+/* テキスト入力 */
+.input-item {
+  width: 100%;
+  border: 1px solid #f0f0f0;
+  background-color: #f5f5f5;
+  color: #9e9387;
+  padding: 10px 12px;
+  /* ←見た目が安定 */
+  border-radius: 2px;
+  width: 360%;
+}
+
+/* ただし “電話番号の3つ＋ハイフン” だけは横並びに戻す */
+.tel-wrapper
+.form__input-wrapper{
+  flex-direction: row;
+  /* ←電話だけ行方向に戻す */
+  align-items: center;
+  gap: 10px;
+}
+
 /*エラーメッセージ表示*/
 .form__error {
-  height: 20px;
+  margin-top: 5px;
   color: #ec755a;
-  text-align: left;
+  font-size: 0.9em;
 }
 
-/*入力欄の外枠*/
-.form__input--text {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
-}
-
-/*姓と名*/
-.input-name {
-  padding: 10px;
-  width: 70%;
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
-}
-
-/*性別文字列３種*/
-.input-gender {
-  margin-right: 10px;
-  display: inline-flex;
+/* 性別ラジオボタン */
+.gender-wrapper {
+  display: flex;
+  gap: 16px;
   align-items: center;
-  color: #9e9387;
+  accent-color: #7a5c52;
 }
 
-/*ラジオボタン*/
-.input-radio {
+.is-column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.gender-wrapper input[type="radio"] {
+  position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+/* ラベルの左に丸を作る */
+.gender-wrapper label {
+  position: relative;
+  padding-left: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 外側の輪 */
+.input-gender::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #7a5c52;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+}
+
+/* 中の●（未選択は非表示＝縮小） */
+.input-gender::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7a5c52;
+  transform: translateY(-50%) scale(0);
+  transition: transform .15s ease;
+}
+
+/* 選択時に●を表示 */
+.gender-wrapper input[type=radio]:checked+.input-gender::after {
+  transform: translateY(-50%) scale(2);
+}
+
+.tel-sep {
+  color: #7a5c52;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  /* 固定幅 */
+}
+
+
+
+/* ---- プルダウン ---- */
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding-right: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1.2em;
+  /* 少し大きめ */
+  color: #7a5c52;
+}
+
+/*お問い合わせ内容 */
+.form__group--textarea {
+  /* ラベルと入力欄の上端を揃える */
+  align-items: flex-start;
+  margin: 0 auto;
+  border: 2px #7a5c52;
 
 }
 
-/*メールアドレス・住所・建物名入力欄*/
-.input-item {
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
-}
-
-/*電話番号入力欄*/
-.input-tel {
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
-}
-
-/*お問い合わせの種類外柄*/
-.form__input--kind {
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
-}
-
-/*お問い合わせの種類*/
-.input-kind {
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
-}
-
-/*お問い合わせ入力欄外側*/
 .form__input--detail {
-  height: 180px;
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
+  width: 100%;
 }
 
-/*お問い合わせ入力欄外側*/
-.input-detail {
-  border: 1px solid #f5f5f5;
-  background-color: #f5f5f5;
-  color: #9e9387;
+/* お問い合わせ内容のtextarea */
+.form__input--detail textarea {
+  display: block;
+  width: 350%;
+  min-height: 220px;
+  resize: vertical;
+  padding: 10px 12px;
 }
 
-/*確認画面ボタン外側*/
+  /*確認画面ボタン自体*/
 .form__button {
-  border: 1px solid #f5f5f5;
-  margin-top: 30px;
+  width: 100%;
+  justify-content: center;
 }
 
 /*確認画面ボタン*/
-.form__button-submit {
-  padding: 10px;
-  width: 30%;
-  height: 50px;
-  border: 1px solid #f5f5f5;
+.form__button--submit {
+  width: 180px;
+  height: 44px;
+  border: none;
   background-color: #82766a;
   color: #fff;
-  cursor: pointer;
+  font-size: 16px;
+  letter-spacing: 0.1em;
 }
