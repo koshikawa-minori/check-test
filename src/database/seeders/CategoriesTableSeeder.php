@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 
 
 class CategoriesTableSeeder extends Seeder
@@ -15,29 +16,14 @@ class CategoriesTableSeeder extends Seeder
    */
   public function run()
   {
-    $type = [
-      'content' => '商品のお届けについて'
+    $rows = [
+      ['content' => '商品のお届けについて'],
+      ['content' => '商品の交換について'],
+      ['content' => '商品トラブル'],
+      ['content' => 'ショップへのお問い合わせ'],
+      ['content' => 'その他'],
     ];
-    DB::table('categories')->insert($type);
 
-    $type = [
-      'content' => '商品の交換について'
-    ];
-    DB::table('categories')->insert($type);
-
-    $type = [
-      'content' => '商品トラブル'
-    ];
-    DB::table('categories')->insert($type);
-
-    $type = [
-      'content' => 'ショップへのお問い合わせ'
-    ];
-    DB::table('categories')->insert($type);
-
-    $type = [
-      'content' => 'その他'
-    ];
-    DB::table('categories')->insert($type);
+    Category::upsert($rows, ['content']);
   }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Http\Requests\ContactRequest;
+use App\Models\Category;
+
 
 class ContactController extends Controller
 {
@@ -60,6 +62,11 @@ class ContactController extends Controller
       'kind',
       'detail',
     ]);
+
+    if (!empty($contact['kind'])) {
+      $categoryId = Category::where('content', $contact['kind'])->value('id');
+      $contact['category_id'] = $categoryId;
+    }
 
     $genderMap = ['男性' => 1, '女性' => 2, 'その他' => 3];
     $contact['gender'] = $genderMap[$contact['gender']] ?? null;

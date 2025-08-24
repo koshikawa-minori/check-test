@@ -18,6 +18,7 @@ class Contact extends Model
     'address',
     'building',
     'kind',
+    'category_id',
     'detail'
   ];
 }
