@@ -22,21 +22,43 @@ class ContactRequest extends FormRequest
    */
 
 
+  // app/Http/Requests/ContactRequest.php
   public function rules()
   {
-    return [
+    // 共通
+    $common = [
       'last_name' => ['required', 'string', 'max:255'],
       'first_name' => ['required', 'string', 'max:255'],
-      'gender' => ['required', 'in:男性,女性,その他', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255'],
-      'tel1' => ['required', 'digits_between:2,5'],
-      'tel2' => ['required', 'digits_between:2,5'],
-      'tel3' => ['required', 'digits_between:2,5'],
-      'address' => ['required', 'string', 'max:255'],
-      'kind' => ['required', 'max:255'],
-      'detail' => ['required', 'string', 'max:120'],
+      'gender'    => ['required', 'in:男性,女性,その他'],
+      'email'     => ['required', 'string', 'email', 'max:255'],
+      'address'   => ['required', 'string', 'max:255'],
+      'kind'      => ['required', 'max:255'],
+      'detail'    => ['required', 'string', 'max:120'],
     ];
+
+    // 確認画面（/confirm）
+    if ($this->routeIs('contact.confirm')) {
+      return $common + [
+        'tel1' => ['required', 'digits_between:2,5'],
+        'tel2' => ['required', 'digits_between:2,5'],
+        'tel3' => ['required', 'digits_between:2,5'],
+      ];
+    }
+
+    // 送信（/thanks → store）
+    if ($this->routeIs('contact.store')) {
+      return $common + [
+        'tel'  => ['required', 'digits_between:10,11'],
+        'tel1' => ['nullable'],
+        'tel2' => ['nullable'],
+        'tel3' => ['nullable'],
+      ];
+    }
+
+    // 念のため
+    return $common;
   }
+
 
   public function messages()
   {

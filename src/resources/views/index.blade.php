@@ -130,11 +130,11 @@
           <div class="form__input-wrapper select-wrapper">
             <select class="input-item" name="kind">
               <option value="">選択してください</option>
-              <option>商品のお届けについて</option>
-              <option>商品の交換について</option>
-              <option>商品トラブル</option>
-              <option>ショップへのお問い合わせ</option>
-              <option>その他</option>
+              <option value="商品のお届けについて" {{ old('kind', $contact['kind'] ?? '') == '商品のお届けについて' ? 'selected' : '' }}>商品のお届けについて</option>
+              <option value="商品の交換について" {{ old('kind', $contact['kind'] ?? '') == '商品の交換について' ? 'selected' : '' }}>商品の交換について</option>
+              <option value="商品トラブル" {{ old('kind', $contact['kind'] ?? '') == '商品トラブル' ? 'selected' : '' }}>商品トラブル</option>
+              <option value="ショップへのお問い合わせ" {{ old('kind', $contact['kind'] ?? '') == 'ショップへのお問い合わせ' ? 'selected' : '' }}>ショップへのお問い合わせ</option>
+              <option value="その他" {{ old('kind', $contact['kind'] ?? '') == 'その他' ? 'selected' : '' }}>その他</option>
             </select>
           </div>
           <div class="form__error">
@@ -159,9 +159,7 @@
           </div>
         </div>
         <div class="form__button">
-          <button class="form__button--submit" type="submit">
-            確認画面
-          </button>
+          <button class="form__button--submit" type="submit">確認画面</button>
         </div>
     </form>
   </div>

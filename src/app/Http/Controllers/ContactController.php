@@ -8,11 +8,16 @@ use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
 {
-  public function index(){
 
+  public function index(Request $request)
+  {
+    if ($request->isMethod('post')) {
+      return redirect()->route('contact.index')->withInput();
+    }
     return view('index');
-
   }
+
+
 
   public function confirm(ContactRequest $request)
   {
@@ -55,9 +60,19 @@ class ContactController extends Controller
       'kind',
       'detail',
     ]);
-    Contact::create($contact);
-    return view('thanks');
 
+    $genderMap = ['男性' => 1, '女性' => 2, 'その他' => 3];
+    $contact['gender'] = $genderMap[$contact['gender']] ?? null;
+
+    Contact::create($contact);
+
+    return redirect()->route('contact.thanks');
+
+  }
+
+  public function thanks()
+  {
+    return view('thanks');
   }
 
 }

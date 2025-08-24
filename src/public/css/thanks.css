@@ -3,29 +3,66 @@
   margin: 0 auto;
   padding: 30px 15px;
   max-width: 1230px;
+  min-height: 70vh;
+  position: relative;
+  display: grid;
+  place-items: center;
 }
 
 /* Thank you */
+.background-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0.12;
+  font-family: "Alike", serif;
+  font-weight: 700;
+  font-size: clamp(96px, 10vw, 200px);
+  letter-spacing: .02em;
+  color: #cbc0b7;
+  transform: translateY(4vh);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ｈ２とボタン */
 .thanks__content--group {
-  margin: 0 auto;
-  width: 70%;
-  opacity: 0.1;
-  color:82766a;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: grid;
+  gap: 16px;
+  transform: translateY(6vh);
+}
+
+/* ｈ２*/
+.thanks__head {
+color: #82766a;
+}
+
+.thanks__title {
+  margin: 0;
+  font-size: clamp(18px, 2.6vw, 24px);;
 }
 
 /* Thanks ボタン*/
-.thanks__button{
-  width: 100%;
+.thanks__button {
+  display: flex;
   justify-content: center;
 }
 
 /* Thanks ボタンsubmit*/
 .thanks__button-submit{
-  width: 180px;
-  height: 44px;
+  width: 100px;
+  height: 35px;
   border: none;
   background-color: #82766a;
   color: #fff;
   font-size: 16px;
   letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }

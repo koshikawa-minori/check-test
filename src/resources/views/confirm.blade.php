@@ -63,32 +63,34 @@
       </table>
     </div>
     <div class="confirm__button">
-      <form action="/thanks" method="post" class="action">
+      <form action="{{ route('contact.store') }}" method="post" class="action">
         @csrf
-        <input type="hidden" name="last_name" value="{{ $contact['last_name'] }}">
-        <input type="hidden" name="first_name" value="{{ $contact['first_name'] }}">
-        <input type="hidden" name="gender" value="{{ $contact['gender'] }}">
-        <input type="hidden" name="email" value="{{ $contact['email'] }}">
+        <input type="hidden" name="last_name" value="{{ $contact['last_name'] ?? '' }}">
+        <input type="hidden" name="first_name" value="{{ $contact['first_name'] ?? ''}}">
+        <input type="hidden" name="gender" value="{{ $contact['gender'] ?? ''}}">
+        <input type="hidden" name="email" value="{{ $contact['email'] ?? ''}}">
         <input type="hidden" name="tel" value="{{ $contact['tel'] ?? '' }}">
-        <input type="hidden" name="address" value="{{ $contact['address'] }}">
-        <input type="hidden" name="building" value="{{ $contact['building'] }}">
-        <input type="hidden" name="kind" value="{{ $contact['kind'] }}">
-        <input type="hidden" name="detail" value="{{ $contact['detail'] }}">
+        <input type="hidden" name="address" value="{{ $contact['address'] ?? ''}}">
+        <input type="hidden" name="building" value="{{ $contact['building'] ?? ''}}">
+        <input type="hidden" name="kind" value="{{ $contact['kind'] ?? ''}}">
+        <input type="hidden" name="detail" value="{{ $contact['detail'] ?? ''}}">
         <button type="submit" class="confirm__button--thanks">
           送信
         </button>
       </form>
-      <form action="/" method="post">
+      <form action="{{ route('contact.index') }}" method="post">
           @csrf
-        <input type="hidden" name="last_name" value="{{ $contact['last_name']}}">
-        <input type="hidden" name="first_name" value="{{ $contact['first_name']}}">
-        <input type="hidden" name="address" value="{{ $contact['address']}}">
-        <input type="hidden" name="gender" value="{{ $contact['gender']}}">
-        <input type="hidden" name="email" value="{{ $contact['email']}}">
-        <input type="hidden" name="tel" value="{{ $contact['tel'] ?? ''}}">
-        <input type="hidden" name="building" value="{{ $contact['building']}}">
-        <input type="hidden" name="kind" value="{{ $contact['kind']}}">
-        <input type="hidden" name="detail" value="{{ $contact['detail']}}">
+        <input type="hidden" name="last_name" value="{{ $contact['last_name'] ?? ''}}">
+        <input type="hidden" name="first_name" value="{{ $contact['first_name'] ?? ''}}">
+        <input type="hidden" name="address" value="{{ $contact['address'] ?? ''}}">
+        <input type="hidden" name="gender" value="{{ $contact['gender'] ?? ''}}">
+        <input type="hidden" name="email" value="{{ $contact['email'] ?? ''}}">
+        <input type="hidden" name="tel1" value="{{ substr($contact['tel'] ?? '', 0, 3) }}">
+        <input type="hidden" name="tel2" value="{{ substr($contact['tel'] ?? '', 3, 4) }}">
+        <input type="hidden" name="tel3" value="{{ substr($contact['tel'] ?? '', 7) }}">
+        <input type="hidden" name="building" value="{{ $contact['building'] ?? ''}}">
+        <input type="hidden" name="kind" value="{{ $contact['kind'] ?? ''}}">
+        <input type="hidden" name="detail" value="{{ $contact['detail'] ?? ''}}">
         <button class="confirm__button--contact" type="submit">
             修正
         </button>
