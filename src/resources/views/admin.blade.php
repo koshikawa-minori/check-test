@@ -1,119 +1,98 @@
-@extends('layouts.app')
+{{-- resources/views/admin.blade.php（抜粋） --}}
 
-@section('content')
-  <h1>管理画面</h1>
+@if (session('status'))
+  <div class="flash">{{ session('status') }}</div>
+@endif
 
-  <a href="{{ route('admin.export', request()->query()) }}">エクスポート</a>
+<table class="list">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>氏名</th>
+      <th>メール</th>
+      <th>カテゴリ</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($contacts as $c)
+      <tr>
+        <td>{{ $c->id }}</td>
+        <td>{{ $c->last_name }} {{ $c->first_name }}</td>
+        <td>{{ $c->email }}</td>
+        <td>{{ optional($c->category)->content }}</td>
+        <td>
+          {{-- JSなし：アンカーでモーダルを開く --}}
+          <a class="btn-detail" href="#detail-{{ $c->id }}">詳細</a>
+        </td>
+      </tr>
 
+      {{-- ===== モーダル（:target で開閉、JS不要） ===== --}}
+      <div id="detail-{{ $c->id }}" class="modal" aria-hidden="true">
+        {{-- 背景クリックで閉じる --}}
+        <a href="#" class="modal__overlay" aria-label="閉じる"></a>
 
-  <p>接続DB: {{ $dbName }} 全件数: {{ $totalAll }}</p>
-  <p>現在の条件:
-    gender={{ var_export($gender,true) }},
-    category_id={{ var_export($category_id,true) }},
-    date={{ var_export($date,true) }},
-    match={{ $match }}
-  </p>
+        <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="mt-{{ $c->id }}">
+          <header class="modal__header">
+            <h3 id="mt-{{ $c->id }}" class="modal__title">お問い合わせ詳細</h3>
+            {{-- × ボタンで閉じる（# へ戻す） --}}
+            <a href="#" class="modal__close" aria-label="閉じる">×</a>
+          </header>
 
-  <form method="POST" action="/logout" style="margin-top:1rem;">
-    @csrf
-    <button type="submit">ログアウト</button>
-  </form>
+          <div class="modal__body">
+            <dl class="kv">
+              <div><dt>ID</dt><dd>{{ $c->id }}</dd></div>
+              <div><dt>氏名</dt><dd>{{ $c->last_name }} {{ $c->first_name }}</dd></div>
+              <div><dt>性別</dt><dd>{{ $c->gender }}</dd></div>
+              <div><dt>メール</dt><dd>{{ $c->email }}</dd></div>
+              <div><dt>電話</dt><dd>{{ $c->tel }}</dd></div>
+              <div><dt>住所</dt><dd>{{ $c->address }}</dd></div>
+              <div><dt>建物名</dt><dd>{{ $c->building }}</dd></div>
+              <div><dt>カテゴリ</dt><dd>{{ optional($c->category)->content }}</dd></div>
+              <div><dt>内容</dt><dd style="white-space: pre-wrap;">{{ $c->content }}</dd></div>
+              <div><dt>受付日時</dt><dd>{{ optional($c->created_at)->format('Y-m-d H:i') }}</dd></div>
+            </dl>
+          </div>
 
-  <form method="GET" action="{{ route('admin.index') }}" class="mb-4" style="margin-top:1rem;">
-    <div>
-      <label>姓</label>
-      <input type="text" name="last_name" value="{{ old('last_name', $last_name ?? '') }}">
-    </div>
-    <div>
-      <label>名</label>
-      <input type="text" name="first_name" value="{{ old('first_name', $first_name ?? '') }}">
-    </div>
-    <div>
-      <label>フルネーム（姓+名）</label>
-      <input type="text" name="full_name" value="{{ old('full_name', $full_name ?? '') }}">
-    </div>
-    <div>
-      <label>メール</label>
-      <input type="text" name="email" value="{{ old('email', $email ?? '') }}">
-    </div>
-    <div>
-      <label>性別</label>
-      <select name="gender">
-        <option value="" {{ ($gender==='') ? 'selected' : '' }}>全て</option>
-        <option value="1" {{ ($gender==='1') ? 'selected' : '' }}>男性</option>
-        <option value="2" {{ ($gender==='2') ? 'selected' : '' }}>女性</option>
-        <option value="3" {{ ($gender==='3') ? 'selected' : '' }}>その他</option>
-      </select>
-    </div>
-    <div>
-      <label>お問い合わせ種類</label>
-      <select name="category_id">
-        <option value="" {{ ($category_id==='') ? 'selected' : '' }}>全て</option>
-        @foreach($categories as $cat)
-          <option value="{{ $cat->id }}" {{ (string)$category_id === (string)$cat->id ? 'selected' : '' }}>
-            {{ $cat->content }}
-          </option>
-        @endforeach
-      </select>
-    </div>
-    <div>
-      <label>日付</label>
-      <input type="date" name="date" value="{{ old('date', $date ?? '') }}">
-    </div>
-    <div>
-      <label>一致方法</label>
-      <select name="match">
-        <option value="partial" {{ ($match ?? 'partial')==='partial' ? 'selected' : '' }}>部分一致</option>
-        <option value="exact"   {{ ($match ?? 'partial')==='exact'   ? 'selected' : '' }}>完全一致</option>
-      </select>
-    </div>
-    <div>
-      <button type="submit">検索</button>
-      <a href="{{ route('admin.index') }}">リセット</a>
-    </div>
-  </form>
+          <footer class="modal__footer">
+            <form method="post" action="{{ route('admin.contacts.destroy', $c) }}">
+              @csrf
+              @method('DELETE')
+              {{-- ※要件は「クリックで削除」なので確認ダイアログなし（JS不使用） --}}
+              <button type="submit" class="btn-danger">削除する</button>
+            </form>
+            <a href="#" class="btn-secondary">とじる</a>
+          </footer>
+        </div>
+      </div>
+      {{-- ===== /モーダル ===== --}}
+    @endforeach
+  </tbody>
+</table>
 
-  <p>該当件数：{{ $items->total() }} 件</p>
+<style>
+.list { width:100%; border-collapse:collapse; }
+.list th, .list td { border:1px solid #ddd; padding:8px; }
+.btn-detail { padding:6px 10px; border:1px solid #bbb; background:#fff; text-decoration:none; display:inline-block; }
 
-  @if($items->total() === 0)
-    <p>該当するデータはありません。</p>
-  @else
-    <table border="1" cellspacing="0" cellpadding="6">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>姓</th>
-          <th>名</th>
-          <th>性別</th>
-          <th>メール</th>
-          <th>種類</th>
-          <th>作成日</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($items as $it)
-          <tr>
-            <td>{{ $it->id }}</td>
-            <td>{{ $it->last_name }}</td>
-            <td>{{ $it->first_name }}</td>
-            <td>
-              @switch($it->gender)
-                @case(1) 男性 @break
-                @case(2) 女性 @break
-                @case(3) その他 @break
-                @default ー
-              @endswitch
-            </td>
-            <td>{{ $it->email }}</td>
-            <td>{{ optional($categories->firstWhere('id', $it->category_id))->content }}</td>
-            <td>{{ $it->created_at->format('Y-m-d') }}</td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
+.flash { margin:10px 0; padding:8px 12px; background:#f0fff4; border:1px solid #b2f5ea; }
 
-    <div class="mt-3">
-      {{ $items->links() }}
-    </div>
-  @endif
-@endsection
+/* ===== モーダル（CSSのみ） ===== */
+.modal { position:fixed; inset:0; display:none; z-index:50; }
+.modal:target { display:block; }
+.modal__overlay { position:absolute; inset:0; background:rgba(0,0,0,.4); display:block; }
+.modal__panel { position:relative; max-width:680px; margin:5vh auto; background:#fff; border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2); overflow:hidden; }
+.modal__header, .modal__footer { padding:12px 16px; border-bottom:1px solid #eee; }
+.modal__footer { border-top:1px solid #eee; border-bottom:none; display:flex; gap:8px; justify-content:flex-end; }
+.modal__title { margin:0; font-size:18px; }
+.modal__close { position:absolute; top:8px; right:12px; text-decoration:none; font-size:20px; color:#333; }
+.modal__body { padding:16px; max-height:60vh; overflow:auto; }
+.kv { display:grid; grid-template-columns: 120px 1fr; gap:8px 12px; }
+.kv dt { color:#666; }
+.kv dd { margin:0; }
+
+/* ボタン */
+.btn-danger { background:#e74c3c; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.btn-secondary { background:#f2f2f2; border:1px solid #ddd; padding:8px 12px; border-radius:6px; text-decoration:none; color:#333; }
+</style>

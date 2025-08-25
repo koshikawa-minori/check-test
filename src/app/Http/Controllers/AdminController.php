@@ -5,14 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
 
-  public function index(Request $request)
-  {
-
+  public function index(Request $request)  {
     $last = $request->query('last_name');
     if (is_null($last)) {
       $last = '';
@@ -48,10 +45,8 @@ class AdminController extends Controller
       $date = '';
     }
 
-    $mode = $request->query('match');
-    if (is_null($mode)) {
-      $mode = 'partial';
-    }
+    $match = $request->query('match', 'partial');
+    $comparison = $match === 'exact' ? '=' : 'like';
 
     $query = Contact::query();
 
@@ -102,21 +97,21 @@ class AdminController extends Controller
       $query->whereDate('created_at', '=', $date);
     }
 
-    $items = $query->orderByDesc('id')->paginate(7)->appends($request->query());
+    $contacts = $query->orderByDesc('id')->paginate(7)->appends($request->query());
 
     $categories = Category::all(['id', 'content']);
 
     return view('admin', [
-      'items'       => $items,
-      'categories'  => $categories,
-      'last_name'   => $last,
-      'first_name'  => $first,
-      'full_name'   => $full,
-      'email'       => $email,
-      'gender'      => $gender,
+      'contacts' => $contacts,
+      'categories' => $categories,
+      'last_name' => $last,
+      'first_name' => $first,
+      'full_name' => $full,
+      'email' => $email,
+      'gender' => $gender,
       'category_id' => $categoryId,
-      'date'        => $date,
-      'match'       => $comparison === '=' ? 'exact' : 'partial',
+      'date' => $date,
+      'match' => $match,
     ]);
   }
 
@@ -159,17 +154,13 @@ class AdminController extends Controller
 
       $date = $request->query('date');
       if (is_null($date)) {
-        $date = '';
-      }
+        $date = '';      }
 
-      $mode = $request->query('match');
-      if (is_null($mode)) {
-        $mode = 'partial';
-      }
+    $match = $request->query('match', 'partial');
+    $comparison = $match === 'exact' ? '=' : 'like';
 
-      $comparison = $request->input('match', 'partial') === 'exact' ? '=' : 'like';
 
-      $query = Contact::query()->with('category');
+    $query = Contact::query()->with('category');
 
 
       if ($last !== '') {
@@ -240,5 +231,14 @@ class AdminController extends Controller
     }, $filename, [
       'Content-Type' => 'text/csv; charset=UTF-8',
     ]);
+  }
+
+
+  public function destroy(Request $request, Contact $contact)
+  {
+      $contact->delete();
+
+      return redirect()->to(url()->previous())->with('status', '削除しました');
+
   }
 }
