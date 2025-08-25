@@ -22,7 +22,7 @@ use App\Http\Responses\LogoutResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-  // ★ バインドは register() に書く
+
   public function register(): void
   {
     $this->app->singleton(RegisterResponseContract::class, RegisterResponse::class);
@@ -30,7 +30,6 @@ class FortifyServiceProvider extends ServiceProvider
     $this->app->singleton(LogoutResponseContract::class,   LogoutResponse::class);
   }
 
-  // ★ Fortify 設定は boot() にまとめる（boot は1つだけ）
   public function boot(): void
   {
     Fortify::createUsersUsing(CreateNewUser::class);

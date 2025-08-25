@@ -8,7 +8,11 @@ use App\Http\Controllers\AdminController;
 Route::middleware(['auth'])->group(
   function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+    Route::get('/admin/export', [AdminController::class, 'export'])->name('admin.export');
+
   });
+
 
 Route::get('/', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/', [ContactController::class, 'index']);

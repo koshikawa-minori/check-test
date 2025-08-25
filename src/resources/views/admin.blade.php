@@ -3,7 +3,10 @@
 @section('content')
   <h1>管理画面</h1>
 
-  <p>接続DB: {{ $dbName }}　全件数: {{ $totalAll }}</p>
+  <a href="{{ route('admin.export', request()->query()) }}">エクスポート</a>
+
+
+  <p>接続DB: {{ $dbName }} 全件数: {{ $totalAll }}</p>
   <p>現在の条件:
     gender={{ var_export($gender,true) }},
     category_id={{ var_export($category_id,true) }},
