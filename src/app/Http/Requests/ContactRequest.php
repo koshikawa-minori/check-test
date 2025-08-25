@@ -27,21 +27,21 @@ class ContactRequest extends FormRequest
   {
     // 共通
     $common = [
+      'category_id' => ['required', 'integer', 'exists:categories,id'],
       'last_name' => ['required', 'string', 'max:255'],
       'first_name' => ['required', 'string', 'max:255'],
       'gender'    => ['required', 'in:男性,女性,その他'],
       'email'     => ['required', 'string', 'email', 'max:255'],
       'address'   => ['required', 'string', 'max:255'],
-      'kind'      => ['required', 'max:255'],
       'detail'    => ['required', 'string', 'max:120'],
     ];
 
     // 確認画面（/confirm）
     if ($this->routeIs('contact.confirm')) {
       return $common + [
-        'tel1' => ['required', 'digits_between:2,5'],
-        'tel2' => ['required', 'digits_between:2,5'],
-        'tel3' => ['required', 'digits_between:2,5'],
+        'tel1' => ['required', 'digits_between:1,5'],
+        'tel2' => ['required', 'digits_between:1,5'],
+        'tel3' => ['required', 'digits_between:1,5'],
       ];
     }
 
@@ -71,9 +71,9 @@ class ContactRequest extends FormRequest
       'tel1.required' => '電話番号を入力してください',
       'tel2.required' => '電話番号を入力してください',
       'tel3.required' => '電話番号を入力してください',
-      'tel1.digits_between:1,5' => '電話番号は5桁までの数字で入力してください',
-      'tel2.digits_between:1,5' => '電話番号は5桁までの数字で入力してください',
-      'tel3.digits_between:1,5' => '電話番号は5桁までの数字で入力してください',
+      'tel1.digits_between' => '電話番号は5桁までの数字で入力してください',
+      'tel2.digits_between' => '電話番号は5桁までの数字で入力してください',
+      'tel3.digits_between' => '電話番号は5桁までの数字で入力してください',
       'address.required' => '住所を入力して下さい',
       'kind.required' => 'お問い合わせの種類を入力してください',
       'detail.required' => 'お問い合わせ内容を入力してください',

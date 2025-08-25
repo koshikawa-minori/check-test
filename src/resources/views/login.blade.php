@@ -12,4 +12,9 @@
 
   <button type="submit">ログイン</button>
 </form>
+
+<p>
+  アカウントをお持ちでない方は
+  <a href="{{ route('register') }}">こちらから登録</a>
+</p>
 @endsection

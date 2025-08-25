@@ -29,6 +29,7 @@ class ContactController extends Controller
     $request->merge(['tel' => $tel]);
 
     $contact = $request->only([
+      'category_id',
       'last_name',
       'first_name',
       'gender',
@@ -36,7 +37,6 @@ class ContactController extends Controller
       'tel',
       'address',
       'building',
-      'kind',
       'detail',
     ]);
 
@@ -52,6 +52,7 @@ class ContactController extends Controller
     $request->merge(['tel' => $tel]);
 
     $contact = $request->only([
+      'category_id',
       'last_name',
       'first_name',
       'gender',
@@ -59,14 +60,8 @@ class ContactController extends Controller
       'tel',
       'address',
       'building',
-      'kind',
       'detail',
     ]);
-
-    if (!empty($contact['kind'])) {
-      $categoryId = Category::where('content', $contact['kind'])->value('id');
-      $contact['category_id'] = $categoryId;
-    }
 
     $genderMap = ['男性' => 1, '女性' => 2, 'その他' => 3];
     $contact['gender'] = $genderMap[$contact['gender']] ?? null;
