@@ -21,9 +21,9 @@
 ```
 
 ## 使用技術(実行環境)
-- PHP 8.2.29
-- Laravel 12.25.0
-- MySQL 8.0.26
+- PHP 8.2
+- Laravel 12.25
+- MySQL 8.0
 
 ## ER図
 ![お問い合わせフォームER図](./contact_form_er.png)
