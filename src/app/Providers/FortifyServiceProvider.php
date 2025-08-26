@@ -11,7 +11,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 
 use App\Actions\Fortify\CreateNewUser;
 
-// 追加：Contracts と自作 Response の use
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
@@ -41,5 +40,6 @@ class FortifyServiceProvider extends ServiceProvider
       $email = (string) $request->email;
       return Limit::perMinute(10)->by($email . $request->ip());
     });
+
   }
 }

@@ -9,221 +9,102 @@ use App\Models\Category;
 class AdminController extends Controller
 {
 
-  public function index(Request $request)  {
-    $last = $request->query('last_name');
-    if (is_null($last)) {
-      $last = '';
+  public function index(Request $request)
+  {
+    $query = Contact::query()->with('category');
+
+
+    if ($request->filled('keyword')) {
+      $comparison = ($request->input('match') === 'exact') ? '=' : 'like';
+      $value = ($comparison === 'like') ? '%' . $request->keyword . '%' : $request->keyword;
+
+      $query->where(function ($q) use ($comparison, $value) {
+        $q->where('last_name', $comparison, $value)
+          ->orWhere('first_name', $comparison, $value)
+          ->orWhereRaw("CONCAT(last_name, first_name) {$comparison} ?", [$value])
+          ->orWhere('email', $comparison, $value)
+          ->orWhere('detail', $comparison, $value);
+      });
     }
 
-    $first = $request->query('first_name');
-    if (is_null($first)) {
-      $first = '';
+
+    $gender = $request->input('gender');
+    if ($gender !== null && $gender !== '' && $gender !== 'all') {
+      $query->where('gender', (int)$gender);
     }
 
-    $full = $request->query('full_name');
-    if (is_null($full)) {
-      $full = '';
+
+    if ($request->filled('category_id')) {
+      $query->where('category_id', (int)$request->category_id);
     }
 
-    $email = $request->query('email');
-    if (is_null($email)) {
-      $email = '';
+
+    if ($request->filled('date')) {
+      $query->whereDate('created_at', $request->date);
     }
 
-    $gender = $request->query('gender');
-    if (is_null($gender)) {
-      $gender = '';
-    }
-
-    $categoryId = $request->query('category_id');
-    if (is_null($categoryId)) {
-      $categoryId = '';
-    }
-
-    $date = $request->query('date');
-    if (is_null($date)) {
-      $date = '';
-    }
-
-    $match = $request->query('match', 'partial');
-    $comparison = $match === 'exact' ? '=' : 'like';
-
-    $query = Contact::query();
-
-    $comparison = $request->input('match', 'partial') === 'exact' ? '=' : 'like';
-
-
-    if ($last !== '') {
-      if ($comparison === '=') {
-        $query->where('last_name', '=', $last);
-      } else {
-        $query->where('last_name', 'like', "%{$last}%");
-      }
-    }
-
-    if ($first !== '') {
-      if ($comparison === '=') {
-        $query->where('first_name', '=', $first);
-      } else {
-        $query->where('first_name', 'like', "%{$first}%");
-      }
-    }
-
-    if ($full !== '') {
-      if ($comparison === '=') {
-        $query->whereRaw("CONCAT(last_name, first_name) = ?", [$full]);
-      } else {
-        $query->whereRaw("CONCAT(last_name, first_name) LIKE ?", ["%{$full}%"]);
-      }
-    }
-
-    if ($email !== '') {
-      if ($comparison === '=') {
-        $query->where('email', '=', $email);
-      } else {
-        $query->where('email', 'like', "%{$email}%");
-      }
-    }
-
-    if ($gender !== '' && in_array((string)$gender, ['1', '2', '3'], true)) {
-      $query->where('gender', '=', (int)$gender);
-    }
-
-    if ($categoryId !== '') {
-      $query->where('category_id', '=', (int)$categoryId);
-    }
-
-    if ($date !== '') {
-      $query->whereDate('created_at', '=', $date);
-    }
-
-    $contacts = $query->orderByDesc('id')->paginate(7)->appends($request->query());
+    $contacts = $query
+      ->orderBy('created_at', 'desc')
+      ->paginate(7)
+      ->withQueryString();
 
     $categories = Category::all(['id', 'content']);
+    $genderMap = [1 => '男性', 2 => '女性', 3 => 'その他'];
 
-    return view('admin', [
-      'contacts' => $contacts,
-      'categories' => $categories,
-      'last_name' => $last,
-      'first_name' => $first,
-      'full_name' => $full,
-      'email' => $email,
-      'gender' => $gender,
-      'category_id' => $categoryId,
-      'date' => $date,
-      'match' => $match,
-    ]);
+    return view('admin', compact('contacts', 'categories', 'genderMap'));
   }
-
-
 
 
   public function export(Request $request)
   {
     $filename = 'contacts_' . now()->format('Ymd_His') . '.csv';
-
-      $last = $request->query('last_name');
-      if (is_null($last)) {
-        $last = '';
-      }
-
-      $first = $request->query('first_name');
-      if (is_null($first)) {
-        $first = '';
-      }
-
-      $full = $request->query('full_name');
-      if (is_null($full)) {
-        $full = '';
-      }
-
-      $email = $request->query('email');
-      if (is_null($email)) {
-        $email = '';
-      }
-
-      $gender = $request->query('gender');
-      if (is_null($gender)) {
-        $gender = '';
-      }
-
-      $categoryId = $request->query('category_id');
-      if (is_null($categoryId)) {
-        $categoryId = '';
-      }
-
-      $date = $request->query('date');
-      if (is_null($date)) {
-        $date = '';      }
-
-    $match = $request->query('match', 'partial');
-    $comparison = $match === 'exact' ? '=' : 'like';
-
-
     $query = Contact::query()->with('category');
 
 
-      if ($last !== '') {
-        if ($comparison === '=') {
-          $query->where('last_name', '=', $last);
-        } else {
-          $query->where('last_name', 'like', "%{$last}%");
-        }
-      }
+    if ($request->filled('keyword')) {
+      $comparison = ($request->input('match') === 'exact') ? '=' : 'like';
+      $value = ($comparison === 'like') ? '%' . $request->keyword . '%' : $request->keyword;
 
-      if ($first !== '') {
-        if ($comparison === '=') {
-          $query->where('first_name', '=', $first);
-        } else {
-          $query->where('first_name', 'like', "%{$first}%");
-        }
-      }
+      $query->where(function ($q) use ($comparison, $value) {
+        $q->where('last_name', $comparison, $value)
+          ->orWhere('first_name', $comparison, $value)
+          ->orWhereRaw("CONCAT(last_name, first_name) {$comparison} ?", [$value])
+          ->orWhere('email', $comparison, $value)
+          ->orWhere('detail', $comparison, $value);
+      });
+    }
 
-      if ($full !== '') {
-        if ($comparison === '=') {
-          $query->whereRaw("CONCAT(last_name, first_name) = ?", [$full]);
-        } else {
-          $query->whereRaw("CONCAT(last_name, first_name) LIKE ?", ["%{$full}%"]);
-        }
-      }
+    $gender = $request->input('gender');
+    if ($gender !== null && $gender !== '' && $gender !== 'all') {
+      $query->where('gender', (int)$gender);
+    }
 
-      if ($email !== '') {
-        if ($comparison === '=') {
-          $query->where('email', '=', $email);
-        } else {
-          $query->where('email', 'like', "%{$email}%");
-        }
-      }
+    if ($request->filled('category_id')) {
+      $query->where('category_id', (int)$request->category_id);
+    }
 
-      if ($gender !== '' && in_array((string)$gender, ['1', '2', '3'], true)) {
-        $query->where('gender', '=', (int)$gender);
-      }
+    if ($request->filled('date')) {
+      $query->whereDate('created_at', $request->date);
+    }
 
-      if ($categoryId !== '') {
-        $query->where('category_id', '=', (int)$categoryId);
-      }
 
-      if ($date !== '') {
-        $query->whereDate('created_at', '=', $date);
-      }
-
-      $contacts = $query->orderByDesc('id')->get();
+    $contacts = $query->orderBy('created_at', 'desc')->get();
 
     return response()->streamDownload(function () use ($contacts) {
       $out = fopen('php://output', 'w');
 
-      fputcsv($out, ['姓', '名', '性別', 'メール', 'お問い合わせの種類', '作成日']);
 
+      fputcsv($out, ['姓', '名', '性別', 'メール', 'お問い合わせの種類', '作成日']);
       $genderMap = [1 => '男性', 2 => '女性', 3 => 'その他'];
 
-      foreach ($contacts as $contact) {
+      foreach ($contacts as $c) {
         fputcsv($out, [
-          $contact->last_name,
-          $contact->first_name,
-          $genderMap[$contact->gender] ?? (string)$contact->gender,
-          $contact->email,
-          optional($contact->category)->content ?? (string)$contact->category_id,
-          $contact->created_at->format('Y-m-d'),
+          $c->last_name,
+          $c->first_name,
+          $genderMap[$c->gender] ?? (string)$c->gender,
+          $c->email,
+          optional($c->category)->content ?? (string)$c->category_id,
+          $c->created_at->format('Y-m-d'),
         ]);
       }
 
@@ -234,11 +115,9 @@ class AdminController extends Controller
   }
 
 
-  public function destroy(Request $request, Contact $contact)
+  public function destroy(Contact $contact)
   {
-      $contact->delete();
-
-      return redirect()->to(url()->previous())->with('status', '削除しました');
-
+    $contact->delete();
+    return redirect()->back()->with('status', '削除しました');
   }
 }

@@ -1,98 +1,167 @@
-{{-- resources/views/admin.blade.php（抜粋） --}}
+@extends('layouts.app')
 
-@if (session('status'))
-  <div class="flash">{{ session('status') }}</div>
-@endif
+@section('header-button')
+  <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button class="logout-btn" type="submit">logout</button>
+  </form>
+@endsection
 
-<table class="list">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>氏名</th>
-      <th>メール</th>
-      <th>カテゴリ</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach($contacts as $c)
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/common.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
+@endsection
+
+@section('content')
+
+
+<div class="admin__head">
+  <h1>Admin</h1>
+</div>
+
+<div class="admin__group">
+
+  <form class="search__group" method="get" action="/admin">
+    <input class="search__group-input" type="text" name="keyword"
+            value="{{ request('keyword') }}" placeholder="名前やメールアドレスを入力してください">
+
+    <div class="search__group-select">
+      <div class="search__group--gender">
+        <select class="select-item" name="gender" >
+          <option value="">性別</option>
+          <option value="all" {{ request('gender') === 'all' ? 'selected' : '' }}>全て</option>
+          @foreach($genderMap as $val => $label)
+            <option value="{{ $val }}"
+              {{ (string)request('gender') === (string)$val ? 'selected' : '' }}>
+              {{ $label }}
+            </option>
+          @endforeach
+        </select>
+      </div>
+
+      <div class="search__group--category-id">
+        <select class="select-item" name="category_id">
+          <option value="">お問い合わせの種類</option>
+          @foreach($categories as $cat)
+            <option value="{{ $cat->id }}"
+              {{ (string)request('category_id') === (string)$cat->id ? 'selected' : '' }}>
+              {{ $cat->content }}
+            </option>
+          @endforeach
+        </select>
+      </div>
+
+      <div class="search__group--date">
+        <input id="date" type="date" name="date" value="{{ old('date', request('date')) }}">
+      </div>
+
+      <div class="search__group--btn">
+        <button class="search-btn" type="submit">検索</button>
+        <button class="search-reset" type="button" onclick="location.href='/admin'">リセット</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="admin__group--tool">
+    <div class="tool-export">
+      <button type="button"
+              onclick="location.href='{{ url('/admin/export') }}?{{ request()->getQueryString() }}'">エクスポート
+      </button>
+    </div>
+    <div class="tool-pagination">
+      {{ $contacts->links('pagination::bootstrap-5') }}
+    </div>
+  </div>
+  <table>
+    <thead class="table-head">
       <tr>
-        <td>{{ $c->id }}</td>
-        <td>{{ $c->last_name }} {{ $c->first_name }}</td>
-        <td>{{ $c->email }}</td>
-        <td>{{ optional($c->category)->content }}</td>
-        <td>
-          {{-- JSなし：アンカーでモーダルを開く --}}
-          <a class="btn-detail" href="#detail-{{ $c->id }}">詳細</a>
-        </td>
+        <th class="table-col-name">名前</th>
+        <th class="table-col-gender">性別</th>
+        <th class="table-col-email">メールアドレス</th>
+        <th class="table-col-category">お問い合わせ種類</th>
+        <th class="table-col-action"></th> {{-- 右端の詳細ボタン用 --}}
       </tr>
+    </thead>
 
-      {{-- ===== モーダル（:target で開閉、JS不要） ===== --}}
-      <div id="detail-{{ $c->id }}" class="modal" aria-hidden="true">
-        {{-- 背景クリックで閉じる --}}
-        <a href="#" class="modal__overlay" aria-label="閉じる"></a>
+    <tbody class="table-body">
+      @foreach($contacts ?? [] as $contact)
+        <tr>
+          <td class="table-col-name">{{ $contact->last_name }}{{ $contact->first_name }}</td>
+          <td class="table-col-gender">{{ $genderMap[$contact->gender] ?? $contact->gender }}</td>
+          <td class="table-col-email">{{ $contact->email }}</td>
+          <td class="table-col-category">{{ optional($contact->category)->content ?? $contact->category_id }}</td>
+          <td class="table-col-date">
+            <button class="btn-detail" type="button" data-id="{{ $contact->id }}">詳細</button>
+          </td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
 
-        <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="mt-{{ $c->id }}">
-          <header class="modal__header">
-            <h3 id="mt-{{ $c->id }}" class="modal__title">お問い合わせ詳細</h3>
-            {{-- × ボタンで閉じる（# へ戻す） --}}
-            <a href="#" class="modal__close" aria-label="閉じる">×</a>
-          </header>
+  @foreach($contacts ?? [] as $contact)
+    <div class="modal" id="modal-{{ $contact->id }}">
+      <div class="modal-content">
+        <button class="close" type="button" data-id="{{ $contact->id }}" aria-label="閉じる">×</button>
 
-          <div class="modal__body">
-            <dl class="kv">
-              <div><dt>ID</dt><dd>{{ $c->id }}</dd></div>
-              <div><dt>氏名</dt><dd>{{ $c->last_name }} {{ $c->first_name }}</dd></div>
-              <div><dt>性別</dt><dd>{{ $c->gender }}</dd></div>
-              <div><dt>メール</dt><dd>{{ $c->email }}</dd></div>
-              <div><dt>電話</dt><dd>{{ $c->tel }}</dd></div>
-              <div><dt>住所</dt><dd>{{ $c->address }}</dd></div>
-              <div><dt>建物名</dt><dd>{{ $c->building }}</dd></div>
-              <div><dt>カテゴリ</dt><dd>{{ optional($c->category)->content }}</dd></div>
-              <div><dt>内容</dt><dd style="white-space: pre-wrap;">{{ $c->content }}</dd></div>
-              <div><dt>受付日時</dt><dd>{{ optional($c->created_at)->format('Y-m-d H:i') }}</dd></div>
-            </dl>
-          </div>
+        <div class="modal-grid">
+          <div class="modal-label">お名前</div>
+          <div class="modal-value">{{ $contact->last_name }}{{ $contact->first_name }}</div>
 
-          <footer class="modal__footer">
-            <form method="post" action="{{ route('admin.contacts.destroy', $c) }}">
-              @csrf
-              @method('DELETE')
-              {{-- ※要件は「クリックで削除」なので確認ダイアログなし（JS不使用） --}}
-              <button type="submit" class="btn-danger">削除する</button>
-            </form>
-            <a href="#" class="btn-secondary">とじる</a>
-          </footer>
+          <div class="modal-label">性別</div>
+          <div class="modal-value">{{ $genderMap[$contact->gender] ?? $contact->gender }}</div>
+
+          <div class="modal-label">メールアドレス</div>
+          <div class="modal-value">{{ $contact->email }}</div>
+
+          <div class="modal-label">電話番号</div>
+          <div class="modal-value">{{ $contact->tel ?? '—' }}</div>
+
+          <div class="modal-label">住所</div>
+          <div class="modal-value">{{ $contact->address ?? '—' }}</div>
+
+          <div class="modal-label">建物名</div>
+          <div class="modal-value">{{ $contact->building ?? '—' }}</div>
+
+          <div class="modal-label">お問い合わせの種類</div>
+          <div class="modal-value">{{ optional($contact->category)->content ?? '—' }}</div>
+
+          <div class="modal-label">お問い合わせ内容</div>
+          <div class="modal-value">{!! nl2br(e($contact->detail)) !!}</div>
+        </div>
+
+        <div class="modal-actions">
+          <form method="POST" action="{{ route('admin.contacts.destroy', $contact->id) }}">
+            @csrf
+            @method('DELETE')
+            <button class="delete" type="submit">削除</button>
+          </form>
         </div>
       </div>
-      {{-- ===== /モーダル ===== --}}
-    @endforeach
-  </tbody>
-</table>
+    </div>
+  @endforeach
+</div>
+@endsection
 
-<style>
-.list { width:100%; border-collapse:collapse; }
-.list th, .list td { border:1px solid #ddd; padding:8px; }
-.btn-detail { padding:6px 10px; border:1px solid #bbb; background:#fff; text-decoration:none; display:inline-block; }
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
 
-.flash { margin:10px 0; padding:8px 12px; background:#f0fff4; border:1px solid #b2f5ea; }
+    document.querySelectorAll('.btn-detail').forEach(function (btn){
+      btn.addEventListener('click', function () {
+        var id =btn.dataset.id;
+        var modal =document.getElementById('modal-' + id);
+        if (modal) modal.classList.add('is-open');
 
-/* ===== モーダル（CSSのみ） ===== */
-.modal { position:fixed; inset:0; display:none; z-index:50; }
-.modal:target { display:block; }
-.modal__overlay { position:absolute; inset:0; background:rgba(0,0,0,.4); display:block; }
-.modal__panel { position:relative; max-width:680px; margin:5vh auto; background:#fff; border-radius:10px;
-  box-shadow:0 10px 30px rgba(0,0,0,.2); overflow:hidden; }
-.modal__header, .modal__footer { padding:12px 16px; border-bottom:1px solid #eee; }
-.modal__footer { border-top:1px solid #eee; border-bottom:none; display:flex; gap:8px; justify-content:flex-end; }
-.modal__title { margin:0; font-size:18px; }
-.modal__close { position:absolute; top:8px; right:12px; text-decoration:none; font-size:20px; color:#333; }
-.modal__body { padding:16px; max-height:60vh; overflow:auto; }
-.kv { display:grid; grid-template-columns: 120px 1fr; gap:8px 12px; }
-.kv dt { color:#666; }
-.kv dd { margin:0; }
+      });
+    });
 
-/* ボタン */
-.btn-danger { background:#e74c3c; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
-.btn-secondary { background:#f2f2f2; border:1px solid #ddd; padding:8px 12px; border-radius:6px; text-decoration:none; color:#333; }
-</style>
+
+    document.querySelectorAll('.modal .close').forEach(function (x) {
+      x.addEventListener('click', function () {
+        var id = x.dataset.id;
+        var modal = document.getElementById('modal-' + id);
+        if (modal) modal.classList.remove('is-open');
+      });
+    });
+
+  });
+</script>

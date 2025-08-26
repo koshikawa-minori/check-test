@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('header-button') @endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/confirm.css') }}">
 @endsection
@@ -51,7 +51,7 @@
         <tr class="confirm__row">
           <th class="confirm-table__header">お問い合わせの種類</th>
           <td class="confirm-table__text">
-            <input type="text" name="kind" value="{{ $contact['kind']}}" readonly>
+            <input type="text" value="{{ $categories[$contact['category_id']]}}" readonly>
           </td>
         </tr>
         <tr class="confirm__row">
@@ -72,7 +72,7 @@
         <input type="hidden" name="tel" value="{{ $contact['tel'] ?? '' }}">
         <input type="hidden" name="address" value="{{ $contact['address'] ?? ''}}">
         <input type="hidden" name="building" value="{{ $contact['building'] ?? ''}}">
-        <input type="hidden" name="kind" value="{{ $contact['kind'] ?? ''}}">
+        <input type="hidden" name="category_id" value="{{ $contact['category_id'] ?? ''}}">
         <input type="hidden" name="detail" value="{{ $contact['detail'] ?? ''}}">
         <button type="submit" class="confirm__button--thanks">
           送信
@@ -89,7 +89,7 @@
         <input type="hidden" name="tel2" value="{{ substr($contact['tel'] ?? '', 3, 4) }}">
         <input type="hidden" name="tel3" value="{{ substr($contact['tel'] ?? '', 7) }}">
         <input type="hidden" name="building" value="{{ $contact['building'] ?? ''}}">
-        <input type="hidden" name="kind" value="{{ $contact['kind'] ?? ''}}">
+        <input type="hidden" name="category_id" value="{{ $contact['category_id'] ?? ''}}">
         <input type="hidden" name="detail" value="{{ $contact['detail'] ?? ''}}">
         <button class="confirm__button--contact" type="submit">
             修正

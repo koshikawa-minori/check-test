@@ -8,6 +8,8 @@ class LoginResponse implements LoginResponseContract
 {
   public function toResponse($request)
   {
+    $request->session()->forget('url.intended');
+
     return redirect('/admin');
   }
 }

@@ -1,5 +1,5 @@
 @extends('layouts.blank')
-
+@section('header-button') @endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/thanks.css') }}" >
 @endsection

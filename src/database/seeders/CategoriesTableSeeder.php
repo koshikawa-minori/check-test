@@ -17,13 +17,13 @@ class CategoriesTableSeeder extends Seeder
   public function run()
   {
     $rows = [
-      ['content' => '商品のお届けについて'],
-      ['content' => '商品の交換について'],
-      ['content' => '商品トラブル'],
-      ['content' => 'ショップへのお問い合わせ'],
-      ['content' => 'その他'],
+      ['id' => 1, 'content' => '商品のお届けについて '],
+      ['id' => 2, 'content' => '商品の交換について'],
+      ['id' => 3, 'content' => '商品トラブル'],
+      ['id' => 4, 'content' => 'ショップへのお問い合わせ'],
+      ['id' => 5, 'content' => 'その他'],
     ];
 
-    Category::upsert($rows, ['content']);
+    Category::upsert($rows, ['id']);
   }
 }

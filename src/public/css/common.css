@@ -1,14 +1,22 @@
 .header {
-  border-bottom: solid;
-  color: #ededed;
+  width: 100%;
+  border-bottom: 1px solid #d3d2d0;
+  background: #fff;
 }
 
 .header__inner {
-  margin: 0 auto;
-  padding: 20px 15px;
   max-width: 1230px;
-  text-align: center;
+  margin: 0 auto;
+  padding: var(--header-pad-y) var(--header-pad-x);
+  min-height: var(--header-min-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
 
+.header__space {
+  width: 100px;
 }
 
 .header__logo {
@@ -16,5 +24,74 @@
   font-family: "Alike", serif;
   font-size: 25px;
   font-weight: bold;
+  text-decoration: none;
 }
 
+.header__button{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 1px;
+  gap: 8px;
+}
+
+.header__inner {
+  max-width: 1230px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+
+.header__space {
+  width: 120px;
+
+}
+
+/* ロゴ */
+.header__logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #847870;
+  font-family: "Alike", serif;
+  font-size: 25px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* 右端ボタン */
+.header__button {
+  width: 120px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.header__button .logout-btn {
+  padding: 6px 12px;
+  background: #f6f1ec;
+  color: #847870;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header__button .logout-btn:hover {
+  opacity: 0.8;
+}
+
+/* ===== Header Lock (最後に置く) ===== */
+:root {
+  --header-pad-y: 28px;
+  /* 縦幅（上下パディング）をここで管理 */
+  --header-pad-x: 20px;
+  --header-min-h: 72px;
+  /* 最小高さの安全網 */
+  --header-side-w: 120px;
+  /* 左スペース/右ボタンの幅 */
+}

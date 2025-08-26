@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('header-button')
+@endsection
+
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/index.css') }}" />
 @endsection
@@ -42,15 +45,15 @@
         </div>
         <div class="form__group--content is-column">
             <div class="gender-wrapper">
-                @php $g = old('gender', $contact['gender'] ?? '男性'); @endphp
+              @php $g = old('gender', $contact['gender'] ?? '男性'); @endphp
               <input id="gender-male"   type="radio" name="gender" value="男性"  {{ $g==='男性' ? 'checked' : '' }}>
-              <label for="gender-male"   class="input-gender">男性</label>
+              <label class="input-gender" for="gender-male">男性</label>
 
               <input id="gender-female" type="radio" name="gender" value="女性"  {{ $g==='女性' ? 'checked' : '' }}>
-              <label for="gender-female" class="input-gender">女性</label>
+              <label class="input-gender" for="gender-female">女性</label>
 
               <input id="gender-other"  type="radio" name="gender" value="その他" {{ $g==='その他' ? 'checked' : '' }}>
-              <label for="gender-other"  class="input-gender">その他</label>
+              <label class="input-gender" for="gender-other">その他</label>
             </div>
             <div class="form__error">
               @error('gender') {{ $message }} @enderror
@@ -128,17 +131,17 @@
         </div>
         <div class="form__group--content is-column">
           <div class="form__input-wrapper select-wrapper">
-            <select class="input-item" name="kind">
+            <select class="input-item" name="category_id">
               <option value="">選択してください</option>
-              <option value="商品のお届けについて" {{ old('kind', $contact['kind'] ?? '') == '商品のお届けについて' ? 'selected' : '' }}>商品のお届けについて</option>
-              <option value="商品の交換について" {{ old('kind', $contact['kind'] ?? '') == '商品の交換について' ? 'selected' : '' }}>商品の交換について</option>
-              <option value="商品トラブル" {{ old('kind', $contact['kind'] ?? '') == '商品トラブル' ? 'selected' : '' }}>商品トラブル</option>
-              <option value="ショップへのお問い合わせ" {{ old('kind', $contact['kind'] ?? '') == 'ショップへのお問い合わせ' ? 'selected' : '' }}>ショップへのお問い合わせ</option>
-              <option value="その他" {{ old('kind', $contact['kind'] ?? '') == 'その他' ? 'selected' : '' }}>その他</option>
+              <option value="1" {{ (string)old('category_id', $contact['category_id'] ?? '') === '1' ? 'selected' : '' }}>商品のお届けについて</option>
+              <option value="2" {{ (string)old('category_id', $contact['category_id'] ?? '') === '2' ? 'selected' : '' }}>商品の交換について</option>
+              <option value="3" {{ (string)old('category_id', $contact['category_id'] ?? '') === '3' ? 'selected' : '' }}>商品トラブル</option>
+              <option value="4" {{ (string)old('category_id', $contact['category_id'] ?? '') === '4' ? 'selected' : '' }}>ショップへのお問い合わせ</option>
+              <option value="5" {{ (string)old('category_id', $contact['category_id'] ?? '') === '5' ? 'selected' : '' }}>その他</option>
             </select>
           </div>
           <div class="form__error">
-            @error('kind'){{ $message }}@enderror
+            @error('category_id'){{ $message }}@enderror
           </div>
         </div>
       </div>

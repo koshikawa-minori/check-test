@@ -78,14 +78,12 @@ input:focus {
 
 /* テキスト入力 */
 .input-item {
-  width: 100%;
+  width: 360%;
   border: 1px solid #f0f0f0;
   background-color: #f5f5f5;
   color: #9e9387;
   padding: 10px 12px;
-  /* ←見た目が安定 */
   border-radius: 2px;
-  width: 360%;
 }
 
 /* 電話番号の3つ＋ハイフン” だけは横並びに戻す */
@@ -213,17 +211,19 @@ input:focus {
 }
 
 .form__input--detail {
-  width: 100%;
+  width: 720px;
+  max-width: 100%;
 }
 
 /* お問い合わせ内容のtextarea */
 .form__input--detail textarea {
   display: block;
-  width: 350%;
+  width: 100%;
   min-height: 220px;
   resize: none;
   padding: 10px 12px;
 }
+
 
   /*確認画面ボタン自体*/
 .form__button {

@@ -27,6 +27,7 @@ class ContactController extends Controller
       ? ($request->tel1 . $request->tel2 . $request->tel3)
       : $request->input('tel', '');
     $request->merge(['tel' => $tel]);
+    $categories = Category::pluck('content', 'id')->all();
 
     $contact = $request->only([
       'category_id',
@@ -40,7 +41,7 @@ class ContactController extends Controller
       'detail',
     ]);
 
-    return view('confirm', compact('contact'));
+    return view('confirm', compact('contact', 'categories'));
 
   }
 
