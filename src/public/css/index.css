@@ -86,7 +86,7 @@ input:focus {
   border-radius: 2px;
 }
 
-/* 電話番号の3つ＋ハイフン” だけは横並びに戻す */
+/* 電話番号の3つ＋ハイフン */
 .tel-wrapper
 .form__input-wrapper{
   flex-direction: row;
@@ -169,7 +169,6 @@ input:focus {
   align-items: center;
   justify-content: center;
   min-width: 40px;
-  /* 固定幅 */
 }
 
 
@@ -197,13 +196,11 @@ input:focus {
   transform: translateY(-50%);
   pointer-events: none;
   font-size: 1.2em;
-  /* 少し大きめ */
   color: #7a5c52;
 }
 
 /*お問い合わせ内容 */
 .form__group--textarea {
-  /* ラベルと入力欄の上端を揃える */
   align-items: flex-start;
   margin: 0 auto;
   border: 2px #7a5c52;
