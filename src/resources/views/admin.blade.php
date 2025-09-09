@@ -52,7 +52,7 @@
       </div>
 
       <div class="search__group--date">
-        <input id="date" type="date" name="date" value="{{ old('date', request('date')) }}">
+        <input class="input-date" id="date" type="date" name="date" value="{{ old('date', request('date')) }}">
       </div>
 
       <div class="search__group--btn">

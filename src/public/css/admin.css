@@ -111,38 +111,50 @@
   font-size: 14px;
 }
 
-input[type="date"] {
+.input-date {
+  background-color: #fcfbfc;
+  color: #aaa;
+  padding:  6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  position: relative;
+  padding-right: 24px;
+}
+
+/* ラッパーを基準にして ▼ を載せる */
+.search__group--date {
+  position: relative;
+  display: inline-block;
+}
+
+/* ▼ をここに出す */
+.search__group--date::after {
+  content: "▼";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #e0e0de;
+  pointer-events: none;
+}
+
+/* 入力自体は余白だけ確保 */
+.input-date {
   background-color: #fcfbfc;
   color: #aaa;
   padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  padding-right: 24px;
+  /* ▼ぶんの余白 */
 }
 
-input[type="date"]::after {
-    content: "▼";
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #e0e0de;
-    pointer-events: none;
-
-  }
-
 /* デフォルトのカレンダーアイコンを非表示 */
-input[type="date"]::-webkit-calendar-picker-indicator {
+.input-date::-webkit-calendar-picker-indicator {
   opacity: 0;
   cursor: pointer;
   position: absolute;
   right: 10px;
-
-}
-
-
-input[type="date"] {
-  position: relative;
-  padding-right: 24px;
 }
 
 .search__group--btn{

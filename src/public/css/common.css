@@ -7,19 +7,19 @@
 .header__inner {
   max-width: 1230px;
   margin: 0 auto;
-  padding: var(--header-pad-y) var(--header-pad-x);
-  min-height: var(--header-min-h);
+  padding: 28px 20px;
+  min-height: 72px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  position: relative;
 }
 
 .header__space {
-  width: 100px;
+  width: 120px;
 }
 
 .header__logo {
+  flex: 1; /* 中央列としてボタン領域を除いた残りのスペースを確保用 */
+  text-align: center;
   color: #847870;
   font-family: "Alike", serif;
   font-size: 25px;
@@ -27,7 +27,9 @@
   text-decoration: none;
 }
 
+/* 右ボタン */
 .header__button{
+  width: 120px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -35,41 +37,9 @@
   gap: 8px;
 }
 
-.header__inner {
-  max-width: 1230px;
-  margin: 0 auto;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-
 .header__space {
   width: 120px;
 
-}
-
-/* ロゴ */
-.header__logo {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #847870;
-  font-family: "Alike", serif;
-  font-size: 25px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* 右端ボタン */
-.header__button {
-  width: 120px;
-  text-align: right;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
 }
 
 .header__button .logout-btn {
@@ -83,15 +53,4 @@
 
 .header__button .logout-btn:hover {
   opacity: 0.8;
-}
-
-/* ===== Header Lock (最後に置く) ===== */
-:root {
-  --header-pad-y: 28px;
-  /* 縦幅（上下パディング）をここで管理 */
-  --header-pad-x: 20px;
-  --header-min-h: 72px;
-  /* 最小高さの安全網 */
-  --header-side-w: 120px;
-  /* 左スペース/右ボタンの幅 */
 }
