@@ -99,16 +99,16 @@ input:focus {
 
 /* 名前 */
 .text-name{
-  flex: 0 0 auto;
-  size: 50px;
+  flex: 1 1 auto; /* 伸び縮み可能に */
   gap: 1em;
-  max-width: 40px;
+  max-width: 120px;
   color: #bba99a;
 
 }
 
 .is-name .confirm-table__text {
-  justify-content: start;
+  display: flex;
+  border: none;
   gap: 1ch;
 
 }

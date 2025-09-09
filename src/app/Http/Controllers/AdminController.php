@@ -18,8 +18,8 @@ class AdminController extends Controller
       $comparison = ($request->input('match') === 'exact') ? '=' : 'like';
       $value = ($comparison === 'like') ? '%' . $request->keyword . '%' : $request->keyword;
 
-      $query->where(function ($q) use ($comparison, $value) {
-        $q->where('last_name', $comparison, $value)
+      $query->where(function ($query) use ($comparison, $value) {
+        $query->where('last_name', $comparison, $value)
           ->orWhere('first_name', $comparison, $value)
           ->orWhereRaw("CONCAT(last_name, first_name) {$comparison} ?", [$value])
           ->orWhere('email', $comparison, $value)
